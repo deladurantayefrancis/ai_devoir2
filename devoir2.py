@@ -19,6 +19,8 @@ PM = [.01, .7]
 
 
 B_cnt = 0  # burglary count
+nB_cnt = 0  # no burglary count
+result = 0
 
 if sys.argv[1] == 'rejet':
 
@@ -42,6 +44,8 @@ if sys.argv[1] == 'rejet':
         if J and not E:
             B_cnt += B
             i += 1
+
+    result = B_cnt / float(sys.argv[2])
 
 elif sys.argv[1] == 'ponderation':
 
@@ -73,11 +77,16 @@ elif sys.argv[1] == 'ponderation':
                 else:
                     w *= 1 - p
 
-        B_cnt += values['B'] * w
+        if values['B']:
+            B_cnt += w
+        else:
+            nB_cnt += w
+
+    result = B_cnt / (B_cnt + nB_cnt)
 
 else:
     print "\n --- Le premier parametre doit etre 'rejet' ou 'ponderation'\n"
     quit(1)
 
 # final result
-print "\n --- Probabilite obtenue : " + str(B_cnt / float(sys.argv[2])) + "\n"
+print "\n --- Probabilite obtenue : " + str(result) + "\n"
